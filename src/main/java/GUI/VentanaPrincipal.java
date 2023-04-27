@@ -4,6 +4,10 @@
  */
 package GUI;
 
+import Class.Usuarios;
+import Class.VariablesGlobales;
+import Estructuras.ListaSimple;
+
 /**
  *
  * @author Javier
@@ -34,9 +38,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btnIngresar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        btnEditor = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        btnConvertidor = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,11 +75,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jButton2.setFont(new java.awt.Font("Leelawadee UI Semilight", 1, 14)); // NOI18N
-        jButton2.setText("Ingresar a Editor");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnEditor.setFont(new java.awt.Font("Leelawadee UI Semilight", 1, 14)); // NOI18N
+        btnEditor.setText("Ingresar a Editor");
+        btnEditor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnEditorActionPerformed(evt);
             }
         });
 
@@ -84,11 +88,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("MENU");
 
-        jButton3.setFont(new java.awt.Font("Leelawadee UI Semilight", 1, 14)); // NOI18N
-        jButton3.setText("Ingresar a Convertidor");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnConvertidor.setFont(new java.awt.Font("Leelawadee UI Semilight", 1, 14)); // NOI18N
+        btnConvertidor.setText("Ingresar a Convertidor");
+        btnConvertidor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnConvertidorActionPerformed(evt);
             }
         });
 
@@ -113,9 +117,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEditor, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnConvertidor, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -142,8 +146,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(61, 61, 61)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(btnEditor, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnConvertidor, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 81, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -165,21 +169,29 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnConvertidorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertidorActionPerformed
         Convertidor ventana = new Convertidor();
         ventana.setVisible(true);
         this.setVisible(false);
 
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnConvertidorActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnEditorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditorActionPerformed
         Editor ventana = new Editor();
         ventana.setVisible(true);
         this.setVisible(false);
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnEditorActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+        String nombreUsuario = txtUsuario.getText();
+        
+        Usuarios usuario = new Usuarios(nombreUsuario);
+        VariablesGlobales.usuarioActual = nombreUsuario;
+        
+        VariablesGlobales.listaSimple.add(usuario);
+        VariablesGlobales.listaSimple.Imprimir();
+        
         Biblioteca ventana = new Biblioteca();
         ventana.setVisible(true);
         this.setVisible(false);
@@ -222,9 +234,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnConvertidor;
+    private javax.swing.JButton btnEditor;
     private javax.swing.JButton btnIngresar;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

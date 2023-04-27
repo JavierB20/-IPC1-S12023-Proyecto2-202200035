@@ -4,6 +4,18 @@
  */
 package GUI;
 
+import Class.Categoria;
+import Class.Imagen;
+import Class.VariablesGlobales;
+import Estructuras.ListaDoble;
+import java.io.File;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+
 /**
  *
  * @author Javier
@@ -17,6 +29,48 @@ public class Biblioteca extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Biblioteca");
+        jlUsuario.setText(VariablesGlobales.usuarioActual);
+        
+        boolean usuarioEncontrado = false;
+            for (Categoria categoria : VariablesGlobales.categorias) {
+                if (categoria.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                    usuarioEncontrado = true;
+                    break;
+                }
+            }
+            
+        if (usuarioEncontrado) {
+            // Validar si ya existe la categoría "General" para el usuario actual
+            boolean categoriaGeneralExiste = Categoria.existeCategoriaGeneral();
+
+            // Agregar la categoría "General" si no existe
+            if (!categoriaGeneralExiste) {
+                Categoria categoriaGeneral = new Categoria(VariablesGlobales.usuarioActual, "General", VariablesGlobales.listaDoble);
+                VariablesGlobales.categorias.add(categoriaGeneral);
+            }
+
+            //Mostar los datos en el Jlist
+            DefaultListModel<String> modeloLista = new DefaultListModel<>();
+            for (Categoria c : VariablesGlobales.categorias) {
+                if (c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                    modeloLista.addElement(c.getCategoria());
+                }
+            }
+            lstCategorias.setModel(modeloLista);
+        }   
+            
+        if (usuarioEncontrado) {
+            DefaultListModel<String> modeloLista = new DefaultListModel<>();
+
+            for (Categoria c : VariablesGlobales.categorias) {
+                if(c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                    modeloLista.addElement(c.getCategoria());
+
+                }
+            }
+            lstCategorias.setModel(modeloLista);
+        }    
+
     }
 
     /**
@@ -36,14 +90,14 @@ public class Biblioteca extends javax.swing.JFrame {
         btnEliminarImagen = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstCategorias = new javax.swing.JList<>();
-        jLabel2 = new javax.swing.JLabel();
-        jpImagen = new javax.swing.JPanel();
+        jlUsuario = new javax.swing.JLabel();
         cbImagen = new javax.swing.JComboBox<>();
         btnCategoriaAgregar = new javax.swing.JButton();
         btnCategoriaElimnar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         btnImagenAnterior = new javax.swing.JButton();
         btnImagenSiguiente = new javax.swing.JButton();
+        jlImg = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -66,40 +120,50 @@ public class Biblioteca extends javax.swing.JFrame {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 22, 100, 20));
 
         btnAgregarImagen.setText("Agregar Imagen");
+        btnAgregarImagen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarImagenActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnAgregarImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(195, 18, -1, -1));
 
         btnEliminarImagen.setText("Eliminar Imagen");
+        btnEliminarImagen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarImagenActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnEliminarImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(344, 18, -1, -1));
 
+        lstCategorias.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "General" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
         jScrollPane1.setViewportView(lstCategorias);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 60, 94, 391));
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("lbUsuario");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(782, 20, 110, -1));
-
-        jpImagen.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jpImagenLayout = new javax.swing.GroupLayout(jpImagen);
-        jpImagen.setLayout(jpImagenLayout);
-        jpImagenLayout.setHorizontalGroup(
-            jpImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 630, Short.MAX_VALUE)
-        );
-        jpImagenLayout.setVerticalGroup(
-            jpImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 339, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(jpImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, 630, -1));
+        jlUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        jlUsuario.setText("lbUsuario");
+        jPanel1.add(jlUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(782, 20, 110, -1));
 
         jPanel1.add(cbImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, 610, -1));
 
         btnCategoriaAgregar.setText("Agregar Categoria");
+        btnCategoriaAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCategoriaAgregarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnCategoriaAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 488, 160, -1));
 
         btnCategoriaElimnar.setText("Eliminar Categoria");
+        btnCategoriaElimnar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCategoriaElimnarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnCategoriaElimnar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 490, 150, -1));
 
         btnSalir.setText("Salir");
@@ -115,6 +179,9 @@ public class Biblioteca extends javax.swing.JFrame {
 
         btnImagenSiguiente.setText(">");
         jPanel1.add(btnImagenSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 250, 40, 45));
+
+        jlImg.setText("img");
+        jPanel1.add(jlImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, 600, 350));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -139,6 +206,105 @@ public class Biblioteca extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void btnAgregarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarImagenActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Seleccione una imagen");
+        chooser.setFileFilter(new FileNameExtensionFilter("Archivos de imagen","jpg","bmp"));
+        
+        int resultado = chooser.showOpenDialog(this);
+        ListaDoble listaDoble = new ListaDoble();
+
+        if(resultado == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = chooser.getSelectedFile();
+            String fileName = selectedFile.getName(); 
+            ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
+            jlImg.setIcon(imageIcon);
+            
+            Imagen imagen = new Imagen(imageIcon, fileName);
+
+            listaDoble.add(imagen);
+            listaDoble.imprimir();
+        }
+        
+        String categoriaSeleccionada = lstCategorias.getSelectedValue().toString();
+        if (categoriaSeleccionada == null) {
+            // No se seleccionó ninguna categoría
+            JOptionPane.showMessageDialog(null, "Seleccione una categoría para agregar una imagen.");
+        } 
+        else {
+            for (int i = 0; i < VariablesGlobales.categorias.size(); i++) {
+                Categoria c = VariablesGlobales.categorias.get(i);
+                if (c.getCategoria().equals(categoriaSeleccionada) && c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                    // Se encontró el objeto Categoria, agregar la imagen a la lista de imágenes
+                    Categoria categoria = new Categoria(VariablesGlobales.usuarioActual, categoriaSeleccionada, listaDoble);
+                    VariablesGlobales.categorias.set(i, categoria);
+                    System.out.println(VariablesGlobales.categorias.get(i).getCategoria());;
+                    System.out.println(VariablesGlobales.categorias.get(i).getUsuario());;
+                    System.out.println(VariablesGlobales.categorias.get(i).getListaDoble());;
+                    break;
+                }
+            }
+        }
+    }//GEN-LAST:event_btnAgregarImagenActionPerformed
+
+    private void btnCategoriaAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriaAgregarActionPerformed
+        String categoriaIngresada = JOptionPane.showInputDialog(this, "Ingresa una Categoria:");
+        Categoria categoria = new Categoria(VariablesGlobales.usuarioActual, categoriaIngresada, VariablesGlobales.listaDoble);
+        
+        VariablesGlobales.categorias.add(categoria);
+                
+        DefaultListModel<String> modeloLista = new DefaultListModel<>();
+
+        for (Categoria c : VariablesGlobales.categorias) {
+            if(c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                modeloLista.addElement(c.getCategoria());
+
+            }
+        }
+        lstCategorias.setModel(modeloLista);
+    }//GEN-LAST:event_btnCategoriaAgregarActionPerformed
+
+    private void btnCategoriaElimnarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriaElimnarActionPerformed
+        String categoriaIngresada = lstCategorias.getSelectedValue().toString();
+        boolean categoriaEliminada  = false;
+        
+        // Recorrer el LinkedList y encontrar el objeto Categoria que tenga la categoria y nombre ingresados
+        for (int i = 0; i < VariablesGlobales.categorias.size(); i++) {
+            Categoria c = VariablesGlobales.categorias.get(i);
+            if (c.getCategoria().equals(categoriaIngresada) && c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                // Se encontró el objeto Categoria, eliminarlo del LinkedList
+                VariablesGlobales.categorias.remove(i);
+                categoriaEliminada = true;
+                break;
+            }
+        }
+        
+        if (categoriaEliminada) {
+            // Mostrar mensaje de éxito
+            DefaultListModel<String> modeloLista = new DefaultListModel<>();
+
+            for (Categoria c : VariablesGlobales.categorias) {
+                if(c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                    modeloLista.addElement(c.getCategoria());
+
+                }
+            }
+            lstCategorias.setModel(modeloLista);
+
+            JOptionPane.showMessageDialog(null, "La categoría " + categoriaIngresada + " ha sido eliminada.");
+            
+        } else {
+            // Mostrar mensaje de error si no se encontró el objeto Categoria
+            JOptionPane.showMessageDialog(null, "La categoría " + categoriaIngresada + " no existe.");
+        }
+    }//GEN-LAST:event_btnCategoriaElimnarActionPerformed
+
+    private void btnEliminarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarImagenActionPerformed
+
+    }//GEN-LAST:event_btnEliminarImagenActionPerformed
+
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -186,10 +352,10 @@ public class Biblioteca extends javax.swing.JFrame {
     private javax.swing.JDialog jDialog1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPanel jpImagen;
+    private javax.swing.JLabel jlImg;
+    private javax.swing.JLabel jlUsuario;
     private javax.swing.JList<String> lstCategorias;
     // End of variables declaration//GEN-END:variables
 }
