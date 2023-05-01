@@ -1,12 +1,16 @@
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Class\Imagen.java
+C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Handlers\JPEGImageHandlerRotator.java
+C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Handlers\JPEGtoBMPImage.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Estructuras\EstructuraDeDatos.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Class\VariablesGlobales.java
+C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Handlers\BMPtoJPEGImage.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\GUI\Biblioteca.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\com\mycompany\ugallery\Ugallery.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Handlers\ImageHandler.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Class\Usuarios.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\GUI\VentanaPrincipal.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Estructuras\ListaDoble.java
+C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Handlers\JPEGImageHandlerBN.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\GUI\Editor.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\GUI\Convertidor.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Estructuras\NodoUsuario.java
@@ -14,4 +18,6 @@ C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Estructuras\Lis
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Estructuras\NodoImagen.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Handlers\BmpHandlerCopy.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Handlers\JPEGHandler.java
+C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Handlers\JPEGImageCopy.java
+C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Handlers\JPEGImageHandlerColors.java
 C:\Users\prueb\Documents\NetBeansProjects\Ugallery\src\main\java\Class\Categoria.java

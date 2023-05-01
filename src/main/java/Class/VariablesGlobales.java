@@ -14,5 +14,6 @@ public class VariablesGlobales {
     public static String usuarioActual;
     public static LinkedList<Categoria> categorias = new LinkedList<Categoria>();
     public static String imagenActual;
+    public static String imgRuta;
 
 }

@@ -4,6 +4,19 @@
  */
 package GUI;
 
+import Class.VariablesGlobales;
+import Handlers.JPEGHandler;
+import Handlers.JPEGImageCopy;
+import Handlers.JPEGImageHandlerBN;
+import Handlers.JPEGImageHandlerColors;
+import Handlers.JPEGImageHandlerRotator;
+import Handlers.JPEGtoBMPImage;
+import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author Javier
@@ -47,15 +60,23 @@ public class Editor extends javax.swing.JFrame {
         lbUrl.setText("URL");
 
         btnImagenSeleccionar.setText("Seleccionar Imagen");
+        btnImagenSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImagenSeleccionarActionPerformed(evt);
+            }
+        });
 
+        rbConvertir.setBackground(new java.awt.Color(28, 83, 131));
         rbConvertir.setForeground(new java.awt.Color(255, 255, 255));
         rbConvertir.setText("JPEG a BMP y viceversa");
         rbConvertir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
+        rbCopia.setBackground(new java.awt.Color(28, 83, 131));
         rbCopia.setForeground(new java.awt.Color(255, 255, 255));
         rbCopia.setText("copia a JPEG");
         rbCopia.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
+        rbRVAS.setBackground(new java.awt.Color(28, 83, 131));
         rbRVAS.setForeground(new java.awt.Color(255, 255, 255));
         rbRVAS.setText("Rojo Verde Azul Sepia");
         rbRVAS.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -65,10 +86,12 @@ public class Editor extends javax.swing.JFrame {
             }
         });
 
+        rbModificarImagen.setBackground(new java.awt.Color(28, 83, 131));
         rbModificarImagen.setForeground(new java.awt.Color(255, 255, 255));
         rbModificarImagen.setText("Modifcar Imagen");
         rbModificarImagen.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
+        rbBN.setBackground(new java.awt.Color(28, 83, 131));
         rbBN.setForeground(new java.awt.Color(255, 255, 255));
         rbBN.setText("Blanco y negro");
         rbBN.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -79,6 +102,11 @@ public class Editor extends javax.swing.JFrame {
         });
 
         btnEjecutar.setText("Ejecutar");
+        btnEjecutar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEjecutarActionPerformed(evt);
+            }
+        });
 
         bntSalir.setText("Salir");
         bntSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -93,8 +121,8 @@ public class Editor extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(lbUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbUrl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnImagenSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -164,6 +192,72 @@ public class Editor extends javax.swing.JFrame {
         ventana.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_bntSalirActionPerformed
+
+    private void btnImagenSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImagenSeleccionarActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Seleccione una imagen");
+        chooser.setFileFilter(new FileNameExtensionFilter("Archivos de imagen","jpg","bmp"));
+
+        int resultado = chooser.showOpenDialog(this);
+
+        if(resultado == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = chooser.getSelectedFile();
+            String fileName = selectedFile.getName(); 
+            ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
+            lbUrl.setText(imageIcon.toString());    
+            VariablesGlobales.imgRuta = imageIcon.toString();
+        }
+
+    }//GEN-LAST:event_btnImagenSeleccionarActionPerformed
+
+    private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
+        if(VariablesGlobales.imgRuta == null) {
+            JOptionPane.showMessageDialog(null,"Seleccione una imagen antes de ejecutar el editro");
+        }
+        else {
+            if(rbConvertir.isSelected()){
+                JPEGtoBMPImage handlerBN = new JPEGtoBMPImage(VariablesGlobales.imgRuta.replace("\\", "/"));
+                try{
+                    JPEGHandler.runHandler(handlerBN);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if(rbCopia.isSelected()){
+                JPEGImageCopy handlerBN = new JPEGImageCopy(VariablesGlobales.imgRuta.replace("\\", "/"));
+                try{
+                    JPEGHandler.runHandler(handlerBN);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if(rbRVAS.isSelected()){
+                JPEGImageHandlerColors handlerBN = new JPEGImageHandlerColors(VariablesGlobales.imgRuta.replace("\\", "/"));
+                try{
+                    JPEGHandler.runHandler(handlerBN);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if(rbModificarImagen.isSelected()){
+                JPEGImageHandlerRotator handlerBN = new JPEGImageHandlerRotator(VariablesGlobales.imgRuta.replace("\\", "/"));
+                try{
+                    JPEGHandler.runHandler(handlerBN);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if(rbBN.isSelected()){
+                JPEGImageHandlerBN handlerBN = new JPEGImageHandlerBN(VariablesGlobales.imgRuta.replace("\\", "/"));
+                try{
+                    JPEGHandler.runHandler(handlerBN);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        
+    }//GEN-LAST:event_btnEjecutarActionPerformed
 
     /**
      * @param args the command line arguments
