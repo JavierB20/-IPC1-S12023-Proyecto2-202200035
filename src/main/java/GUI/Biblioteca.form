@@ -150,6 +150,9 @@
               <StringArray count="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbImagenActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
@@ -200,8 +203,11 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnImagenAnterior">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;"/>
+            <Property name="text" type="java.lang.String" value="A"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnImagenAnteriorActionPerformed"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="140" y="240" width="40" height="46"/>
@@ -212,6 +218,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="&gt;"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnImagenSiguienteActionPerformed"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="830" y="250" width="40" height="45"/>
@@ -220,7 +229,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jlImg">
           <Properties>
-            <Property name="text" type="java.lang.String" value="img"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

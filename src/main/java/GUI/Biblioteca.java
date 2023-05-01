@@ -8,8 +8,12 @@ import Class.Categoria;
 import Class.Imagen;
 import Class.VariablesGlobales;
 import Estructuras.ListaDoble;
+import Estructuras.NodoImagen;
+import java.awt.Image;
 import java.io.File;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -21,7 +25,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Javier
  */
 public class Biblioteca extends javax.swing.JFrame {
-
     /**
      * Creates new form Biblioteca
      */
@@ -148,6 +151,11 @@ public class Biblioteca extends javax.swing.JFrame {
         jlUsuario.setText("lbUsuario");
         jPanel1.add(jlUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(782, 20, 110, -1));
 
+        cbImagen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbImagenActionPerformed(evt);
+            }
+        });
         jPanel1.add(cbImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, 610, -1));
 
         btnCategoriaAgregar.setText("Agregar Categoria");
@@ -174,13 +182,23 @@ public class Biblioteca extends javax.swing.JFrame {
         });
         jPanel1.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 490, 80, -1));
 
-        btnImagenAnterior.setText("<");
+        btnImagenAnterior.setText("A");
+        btnImagenAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImagenAnteriorActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnImagenAnterior, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 240, 40, 46));
 
         btnImagenSiguiente.setText(">");
+        btnImagenSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImagenSiguienteActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnImagenSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 250, 40, 45));
 
-        jlImg.setText("img");
+        jlImg.setToolTipText("");
         jPanel1.add(jlImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, 600, 350));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -199,6 +217,8 @@ public class Biblioteca extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         VentanaPrincipal ventana = new VentanaPrincipal();
         ventana.setVisible(true);
@@ -207,49 +227,71 @@ public class Biblioteca extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnAgregarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarImagenActionPerformed
-        JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle("Seleccione una imagen");
-        chooser.setFileFilter(new FileNameExtensionFilter("Archivos de imagen","jpg","bmp"));
-        
-        int resultado = chooser.showOpenDialog(this);
-        ListaDoble listaDoble = new ListaDoble();
-
-        if(resultado == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = chooser.getSelectedFile();
-            String fileName = selectedFile.getName(); 
-            ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
-            jlImg.setIcon(imageIcon);
-            
-            Imagen imagen = new Imagen(imageIcon, fileName);
-
-            listaDoble.add(imagen);
-            listaDoble.imprimir();
-        }
-        
-        String categoriaSeleccionada = lstCategorias.getSelectedValue().toString();
+        String categoriaSeleccionada = lstCategorias.getSelectedValue();
         if (categoriaSeleccionada == null) {
-            // No se seleccionó ninguna categoría
             JOptionPane.showMessageDialog(null, "Seleccione una categoría para agregar una imagen.");
         } 
         else {
+            categoriaSeleccionada = categoriaSeleccionada.toString();
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Seleccione una imagen");
+            chooser.setFileFilter(new FileNameExtensionFilter("Archivos de imagen","jpg","bmp"));
+
+            int resultado = chooser.showOpenDialog(this);
+            ListaDoble listaDoble = new ListaDoble();
+            
             for (int i = 0; i < VariablesGlobales.categorias.size(); i++) {
                 Categoria c = VariablesGlobales.categorias.get(i);
                 if (c.getCategoria().equals(categoriaSeleccionada) && c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
-                    // Se encontró el objeto Categoria, agregar la imagen a la lista de imágenes
+                    if(c.getListaDoble() != null) {
+                        if(resultado == JFileChooser.APPROVE_OPTION) {
+                        File selectedFile = chooser.getSelectedFile();
+                        String fileName = selectedFile.getName(); 
+                        ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
+                        jlImg.setIcon(imageIcon);
+
+                        Imagen imagen = new Imagen(imageIcon, fileName);
+                        listaDoble = c.getListaDoble();
+
+                        listaDoble.add(imagen);
+                        listaDoble.imprimir();
+                        
+                        //Codigo Provisional
+                        VariablesGlobales.listaDoble = listaDoble;
+                        }
+                    }
+                    else {
+                        if(resultado == JFileChooser.APPROVE_OPTION) {
+                        File selectedFile = chooser.getSelectedFile();
+                        String fileName = selectedFile.getName(); 
+                        ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
+                        jlImg.setIcon(imageIcon);
+
+                        Imagen imagen = new Imagen(imageIcon, fileName);
+                        
+
+                        listaDoble.add(imagen);
+                        listaDoble.imprimir();
+                        }
+                    }
+                                        // Se encontró el objeto Categoria, agregar la imagen a la lista de imágenes
                     Categoria categoria = new Categoria(VariablesGlobales.usuarioActual, categoriaSeleccionada, listaDoble);
                     VariablesGlobales.categorias.set(i, categoria);
-                    System.out.println(VariablesGlobales.categorias.get(i).getCategoria());;
-                    System.out.println(VariablesGlobales.categorias.get(i).getUsuario());;
-                    System.out.println(VariablesGlobales.categorias.get(i).getListaDoble());;
+                    System.out.println(VariablesGlobales.categorias.get(i).getCategoria());
+                    System.out.println(VariablesGlobales.categorias.get(i).getUsuario());
+                    System.out.println(VariablesGlobales.categorias.get(i).getListaDoble());
                     break;
-                }
+                }   
             }
         }
     }//GEN-LAST:event_btnAgregarImagenActionPerformed
 
     private void btnCategoriaAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriaAgregarActionPerformed
         String categoriaIngresada = JOptionPane.showInputDialog(this, "Ingresa una Categoria:");
-        Categoria categoria = new Categoria(VariablesGlobales.usuarioActual, categoriaIngresada, VariablesGlobales.listaDoble);
+        Imagen imagen = new Imagen(null, null);
+        ListaDoble listaDoble = new ListaDoble();
+        
+        Categoria categoria = new Categoria(VariablesGlobales.usuarioActual, categoriaIngresada, listaDoble);
         
         VariablesGlobales.categorias.add(categoria);
                 
@@ -262,6 +304,7 @@ public class Biblioteca extends javax.swing.JFrame {
             }
         }
         lstCategorias.setModel(modeloLista);
+        VariablesGlobales.listaDoble.imprimir();
     }//GEN-LAST:event_btnCategoriaAgregarActionPerformed
 
     private void btnCategoriaElimnarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriaElimnarActionPerformed
@@ -300,8 +343,93 @@ public class Biblioteca extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCategoriaElimnarActionPerformed
 
     private void btnEliminarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarImagenActionPerformed
+        // Obtener el Icon del JLabel
+        Icon icono = jlImg.getIcon();
 
+        // Obtener la imagen del Icon
+        ImageIcon imagenIcono = (ImageIcon) icono;
+        Image imagen = imagenIcono.getImage();
+
+        // Convertir la imagen en un File y obtener su nombre
+        File archivoImagen = new File(imagenIcono.getDescription());
+        String nombreImagen = archivoImagen.getName();
+        
+        VariablesGlobales.listaDoble.delete(nombreImagen);
+        VariablesGlobales.listaDoble.imprimir();
     }//GEN-LAST:event_btnEliminarImagenActionPerformed
+
+    private void btnImagenAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImagenAnteriorActionPerformed
+        // Obtener el Icon del JLabel
+        Icon icono = jlImg.getIcon();
+
+        // Obtener la imagen del Icon
+        ImageIcon imagenIcono = (ImageIcon) icono;
+
+        // Convertir la imagen en un File y obtener su nombre
+        File archivoImagen = new File(imagenIcono.getDescription());
+        VariablesGlobales.imagenActual = archivoImagen.getName();
+
+        Icon urlImg = (Icon) VariablesGlobales.listaDoble.getBefore();
+        
+        if(urlImg != null) {
+            jlImg.setIcon(urlImg);
+        }
+
+    }//GEN-LAST:event_btnImagenAnteriorActionPerformed
+
+    private void btnImagenSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImagenSiguienteActionPerformed
+        // Obtener el Icon del JLabel
+        Icon icono = jlImg.getIcon();
+
+        // Obtener la imagen del Icon
+        ImageIcon imagenIcono = (ImageIcon) icono;
+
+        // Convertir la imagen en un File y obtener su nombre
+        File archivoImagen = new File(imagenIcono.getDescription());
+        VariablesGlobales.imagenActual = archivoImagen.getName();
+
+        Icon urlImg = (Icon) VariablesGlobales.listaDoble.getNext();
+        
+        if(urlImg != null) {
+            jlImg.setIcon(urlImg);
+        }
+    }//GEN-LAST:event_btnImagenSiguienteActionPerformed
+
+    private void cbImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbImagenActionPerformed
+        String categoriaSeleccionada = lstCategorias.getSelectedValue();
+        if (categoriaSeleccionada == null) {
+            JOptionPane.showMessageDialog(null, "Seleccione una categoría para agregar una imagen.");
+        } 
+        else {
+            ListaDoble listaDoble = new ListaDoble();
+            
+            for (int i = 0; i < VariablesGlobales.categorias.size(); i++) {
+                Categoria c = VariablesGlobales.categorias.get(i);
+                if (c.getCategoria().equals(categoriaSeleccionada) && c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                    if(c.getListaDoble() != null) {
+                    DefaultComboBoxModel<String> comboModel = (DefaultComboBoxModel<String>) lstCategorias.getModel();
+
+                        listaDoble = c.getListaDoble();
+
+                        NodoImagen actual = listaDoble.getPrimero();
+                        while (actual != null) {
+                            comboModel.addElement(actual.getImagen().getNombre().toString());
+                            actual = actual.getSiguiente();
+                        }
+                        listaDoble.imprimir();
+                        }
+                    
+                    }
+                                        // Se encontró el objeto Categoria, agregar la imagen a la lista de imágenes
+                    Categoria categoria = new Categoria(VariablesGlobales.usuarioActual, categoriaSeleccionada, listaDoble);
+                    VariablesGlobales.categorias.set(i, categoria);
+                    System.out.println(VariablesGlobales.categorias.get(i).getCategoria());
+                    System.out.println(VariablesGlobales.categorias.get(i).getUsuario());
+                    System.out.println(VariablesGlobales.categorias.get(i).getListaDoble());
+                    break;
+                }   
+            }
+    }//GEN-LAST:event_cbImagenActionPerformed
 
     
     

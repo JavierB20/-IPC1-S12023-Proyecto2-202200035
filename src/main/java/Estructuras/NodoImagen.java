@@ -50,7 +50,4 @@ public class NodoImagen {
         this.anterior = anterior;
     }
 
-
-    
-    
 }

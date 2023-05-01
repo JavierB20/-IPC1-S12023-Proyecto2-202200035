@@ -27,6 +27,7 @@ public class Categoria {
         this.listaDoble = listaDoble;
     }
 
+
     public String getUsuario() {
         return usuario;
     }
