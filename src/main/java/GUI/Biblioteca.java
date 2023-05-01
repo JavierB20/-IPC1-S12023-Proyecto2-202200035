@@ -101,6 +101,7 @@ public class Biblioteca extends javax.swing.JFrame {
         btnImagenAnterior = new javax.swing.JButton();
         btnImagenSiguiente = new javax.swing.JButton();
         jlImg = new javax.swing.JLabel();
+        btnCargarCategoria = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -201,6 +202,14 @@ public class Biblioteca extends javax.swing.JFrame {
         jlImg.setToolTipText("");
         jPanel1.add(jlImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, 600, 350));
 
+        btnCargarCategoria.setText("Cargar");
+        btnCargarCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarCategoriaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnCargarCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -248,6 +257,7 @@ public class Biblioteca extends javax.swing.JFrame {
                         File selectedFile = chooser.getSelectedFile();
                         String fileName = selectedFile.getName(); 
                         ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
+                        
                         jlImg.setIcon(imageIcon);
 
                         Imagen imagen = new Imagen(imageIcon, fileName);
@@ -431,6 +441,46 @@ public class Biblioteca extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_cbImagenActionPerformed
 
+    private void btnCargarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarCategoriaActionPerformed
+
+        String categoriaSeleccionada = lstCategorias.getSelectedValue();
+        if (categoriaSeleccionada == null) {
+            JOptionPane.showMessageDialog(null, "Seleccione una categoría para agregar una imagen.");
+        } 
+        else {
+            for (int i = 0; i < VariablesGlobales.categorias.size(); i++) {
+                Categoria c = VariablesGlobales.categorias.get(i);
+                if (c.getCategoria().equals(categoriaSeleccionada) && c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                    if(c.getListaDoble() != null) {
+                        ListaDoble listaDoble  = c.getListaDoble();
+                        VariablesGlobales.listaDoble = listaDoble;
+                        Icon urlImg = (Icon) VariablesGlobales.listaDoble.getInicio();
+
+                        if(urlImg != null) {
+                            jlImg.setIcon(urlImg);
+                        }
+//                        DefaultComboBoxModel<String> comboModel = (DefaultComboBoxModel<String>) lstCategorias.getModel();
+//
+//                        listaDoble = c.getListaDoble();
+//
+//                        NodoImagen actual = listaDoble.getPrimero();
+//                        while (actual != null) {
+//                            comboModel.addElement(actual.getImagen().getNombre().toString());
+//                            actual = actual.getSiguiente();
+//                        }
+//                        listaDoble.imprimir();
+                        }
+                    
+                    }
+                    System.out.println(VariablesGlobales.categorias.get(i).getCategoria());
+                    System.out.println(VariablesGlobales.categorias.get(i).getUsuario());
+                    System.out.println(VariablesGlobales.categorias.get(i).getListaDoble());
+                    break;
+                }   
+            }
+
+    }//GEN-LAST:event_btnCargarCategoriaActionPerformed
+
     
     
     /**
@@ -470,6 +520,7 @@ public class Biblioteca extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarImagen;
+    private javax.swing.JButton btnCargarCategoria;
     private javax.swing.JButton btnCategoriaAgregar;
     private javax.swing.JButton btnCategoriaElimnar;
     private javax.swing.JButton btnEliminarImagen;

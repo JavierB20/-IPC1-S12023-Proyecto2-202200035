@@ -16,6 +16,16 @@ public class ListaDoble extends EstructuraDeDatos{
         return this.primero;
     }
 
+    public Object getInicio() {
+        if(primerNodo == null) {
+            System.out.println("null");
+            return null;
+        }
+        
+        NodoImagen nodoAuxiliar = primerNodo;
+        return nodoAuxiliar.getImagen().getImageIcon();
+
+    }
     
     public void imprimir(){
         if(primerNodo == null) {
