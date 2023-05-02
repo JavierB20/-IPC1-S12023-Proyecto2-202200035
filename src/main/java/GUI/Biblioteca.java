@@ -45,25 +45,25 @@ public class Biblioteca extends javax.swing.JFrame {
                 }
             }
             
-        if (usuarioEncontrado) {
-            // Validar si ya existe la categoría "General" para el usuario actual
-            boolean categoriaGeneralExiste = Categoria.existeCategoriaGeneral();
-
-            // Agregar la categoría "General" si no existe
-            if (!categoriaGeneralExiste) {
-                Categoria categoriaGeneral = new Categoria(VariablesGlobales.usuarioActual, "General", VariablesGlobales.listaDoble);
-                VariablesGlobales.categorias.add(categoriaGeneral);
-            }
-
-            //Mostar los datos en el Jlist
-            DefaultListModel<String> modeloLista = new DefaultListModel<>();
-            for (Categoria c : VariablesGlobales.categorias) {
-                if (c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
-                    modeloLista.addElement(c.getCategoria());
-                }
-            }
-            lstCategorias.setModel(modeloLista);
-        }   
+//        if (usuarioEncontrado) {
+//            // Validar si ya existe la categoría "General" para el usuario actual
+//            boolean categoriaGeneralExiste = Categoria.existeCategoriaGeneral();
+//
+//            // Agregar la categoría "General" si no existe
+//            if (!categoriaGeneralExiste) {
+//                Categoria categoriaGeneral = new Categoria(VariablesGlobales.usuarioActual, "General", VariablesGlobales.listaDoble);
+//                VariablesGlobales.categorias.add(categoriaGeneral);
+//            }
+//
+//            //Mostar los datos en el Jlist
+//            DefaultListModel<String> modeloLista = new DefaultListModel<>();
+//            for (Categoria c : VariablesGlobales.categorias) {
+//                if (c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+//                    modeloLista.addElement(c.getCategoria());
+//                }
+//            }
+//            lstCategorias.setModel(modeloLista);
+//        }   
             
         if (usuarioEncontrado) {
             DefaultListModel<String> modeloLista = new DefaultListModel<>();
@@ -104,7 +104,14 @@ public class Biblioteca extends javax.swing.JFrame {
                                         cbImagen.addItem(actual.getImagen().getNombre().toString());
                                         actual = actual.getSiguiente();
                                     }
-                                }
+                                }                   
+                                else {
+                                    cbImagen.removeAllItems();
+                                    String rutaImagen = "C:/Users/prueb/Documents/NetBeansProjects/Ugallery/fondo.png";
+                                    File archivoImg = new File(rutaImagen);
+                                    ImageIcon iconoImagen = new ImageIcon(archivoImg.getAbsolutePath());
+                                    jlImg.setIcon(iconoImagen);
+                                } 
                             }
 
                         }
@@ -377,6 +384,12 @@ public class Biblioteca extends javax.swing.JFrame {
             lstCategorias.setModel(modeloLista);
 
             JOptionPane.showMessageDialog(null, "La categoría " + categoriaIngresada + " ha sido eliminada.");
+            jlImg.setText("");
+            cbImagen.removeAllItems();
+            String rutaImagen = "C:/Users/prueb/Documents/NetBeansProjects/Ugallery/fondo.png";
+            File archivoImg = new File(rutaImagen);
+            ImageIcon iconoImagen = new ImageIcon(archivoImg.getAbsolutePath());
+            jlImg.setIcon(iconoImagen);
             
         } else {
             // Mostrar mensaje de error si no se encontró el objeto Categoria
@@ -387,6 +400,7 @@ public class Biblioteca extends javax.swing.JFrame {
     private void btnEliminarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarImagenActionPerformed
         // Obtener el Icon del JLabel
         Icon icono = jlImg.getIcon();
+        String categoriaIngresada = lstCategorias.getSelectedValue().toString();
 
         // Obtener la imagen del Icon
         ImageIcon imagenIcono = (ImageIcon) icono;
@@ -398,6 +412,36 @@ public class Biblioteca extends javax.swing.JFrame {
         
         VariablesGlobales.listaDoble.delete(nombreImagen);
         VariablesGlobales.listaDoble.imprimir();
+        
+        
+        // Hacer algo con el elemento seleccionado
+        for (int i = 0; i < VariablesGlobales.categorias.size(); i++) {
+            Categoria c = VariablesGlobales.categorias.get(i);
+            if (c.getCategoria().equals(categoriaIngresada) && c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                if(c.getListaDoble() != null) {
+                    ListaDoble listaDoble  = c.getListaDoble();
+                    VariablesGlobales.listaDoble = listaDoble;
+                    Icon urlImg = (Icon) VariablesGlobales.listaDoble.getInicio();
+                    cbImagen.removeAllItems();
+                    if(urlImg != null) {
+                        jlImg.setIcon(urlImg);
+
+                        NodoImagen actual = listaDoble.getPrimero();
+                        while (actual != null) {
+                            cbImagen.addItem(actual.getImagen().getNombre().toString());
+                            actual = actual.getSiguiente();
+                        }
+                    }                 
+                    else {
+                        String rutaImagen = "C:/Users/prueb/Documents/NetBeansProjects/Ugallery/fondo.png";
+                        File archivoImg = new File(rutaImagen);
+                        ImageIcon iconoImagen = new ImageIcon(archivoImg.getAbsolutePath());
+                        jlImg.setIcon(iconoImagen);
+                    }
+                }
+            }
+        } 
+        
     }//GEN-LAST:event_btnEliminarImagenActionPerformed
 
     private void btnImagenAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImagenAnteriorActionPerformed
