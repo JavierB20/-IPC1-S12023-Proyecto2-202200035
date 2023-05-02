@@ -10,6 +10,7 @@ import Class.VariablesGlobales;
 import Estructuras.ListaDoble;
 import Estructuras.NodoImagen;
 import java.awt.Image;
+import java.awt.event.ItemListener;
 import java.io.File;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -17,6 +18,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
@@ -72,8 +75,47 @@ public class Biblioteca extends javax.swing.JFrame {
                 }
             }
             lstCategorias.setModel(modeloLista);
-        }    
+        }
+        
+        //Cargar la listaDoble de las categorias
+        lstCategorias.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    // Obtener el elemento seleccionado actualmente
+                    VariablesGlobales.listaDoble = null;
+                    String elementoSeleccionado = lstCategorias.getSelectedValue();
+                    System.out.println("El elemento seleccionado es: " + elementoSeleccionado);
+                    cbImagen.removeAllItems();
+                    // Hacer algo con el elemento seleccionado
+                    for (int i = 0; i < VariablesGlobales.categorias.size(); i++) {
+                        Categoria c = VariablesGlobales.categorias.get(i);
+                        if (c.getCategoria().equals(elementoSeleccionado) && c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                            if(c.getListaDoble() != null) {
+                                ListaDoble listaDoble  = c.getListaDoble();
+                                VariablesGlobales.listaDoble = listaDoble;
+                                Icon urlImg = (Icon) VariablesGlobales.listaDoble.getInicio();
 
+                                if(urlImg != null) {
+                                    jlImg.setIcon(urlImg);
+                                    
+                                    NodoImagen actual = listaDoble.getPrimero();
+                                    while (actual != null) {
+                                        cbImagen.addItem(actual.getImagen().getNombre().toString());
+                                        actual = actual.getSiguiente();
+                                    }
+                                }
+                            }
+
+                        }
+                        System.out.println(VariablesGlobales.categorias.get(i).getCategoria());
+                        System.out.println(VariablesGlobales.categorias.get(i).getUsuario());
+                        System.out.println(VariablesGlobales.categorias.get(i).getListaDoble());
+                    } 
+                    
+                }
+            }
+        });
     }
 
     /**
@@ -101,7 +143,6 @@ public class Biblioteca extends javax.swing.JFrame {
         btnImagenAnterior = new javax.swing.JButton();
         btnImagenSiguiente = new javax.swing.JButton();
         jlImg = new javax.swing.JLabel();
-        btnCargarCategoria = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -202,14 +243,6 @@ public class Biblioteca extends javax.swing.JFrame {
         jlImg.setToolTipText("");
         jPanel1.add(jlImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, 600, 350));
 
-        btnCargarCategoria.setText("Cargar");
-        btnCargarCategoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCargarCategoriaActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnCargarCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, -1, -1));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -298,7 +331,6 @@ public class Biblioteca extends javax.swing.JFrame {
 
     private void btnCategoriaAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriaAgregarActionPerformed
         String categoriaIngresada = JOptionPane.showInputDialog(this, "Ingresa una Categoria:");
-        Imagen imagen = new Imagen(null, null);
         ListaDoble listaDoble = new ListaDoble();
         
         Categoria categoria = new Categoria(VariablesGlobales.usuarioActual, categoriaIngresada, listaDoble);
@@ -406,80 +438,8 @@ public class Biblioteca extends javax.swing.JFrame {
     }//GEN-LAST:event_btnImagenSiguienteActionPerformed
 
     private void cbImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbImagenActionPerformed
-        String categoriaSeleccionada = lstCategorias.getSelectedValue();
-        if (categoriaSeleccionada == null) {
-            JOptionPane.showMessageDialog(null, "Seleccione una categoría para agregar una imagen.");
-        } 
-        else {
-            ListaDoble listaDoble = new ListaDoble();
-            
-            for (int i = 0; i < VariablesGlobales.categorias.size(); i++) {
-                Categoria c = VariablesGlobales.categorias.get(i);
-                if (c.getCategoria().equals(categoriaSeleccionada) && c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
-                    if(c.getListaDoble() != null) {
-                    DefaultComboBoxModel<String> comboModel = (DefaultComboBoxModel<String>) lstCategorias.getModel();
 
-                        listaDoble = c.getListaDoble();
-
-                        NodoImagen actual = listaDoble.getPrimero();
-                        while (actual != null) {
-                            comboModel.addElement(actual.getImagen().getNombre().toString());
-                            actual = actual.getSiguiente();
-                        }
-                        listaDoble.imprimir();
-                        }
-                    
-                    }
-                                        // Se encontró el objeto Categoria, agregar la imagen a la lista de imágenes
-                    Categoria categoria = new Categoria(VariablesGlobales.usuarioActual, categoriaSeleccionada, listaDoble);
-                    VariablesGlobales.categorias.set(i, categoria);
-                    System.out.println(VariablesGlobales.categorias.get(i).getCategoria());
-                    System.out.println(VariablesGlobales.categorias.get(i).getUsuario());
-                    System.out.println(VariablesGlobales.categorias.get(i).getListaDoble());
-                    break;
-                }   
-            }
     }//GEN-LAST:event_cbImagenActionPerformed
-
-    private void btnCargarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarCategoriaActionPerformed
-
-        String categoriaSeleccionada = lstCategorias.getSelectedValue();
-        if (categoriaSeleccionada == null) {
-            JOptionPane.showMessageDialog(null, "Seleccione una categoría para agregar una imagen.");
-        } 
-        else {
-            for (int i = 0; i < VariablesGlobales.categorias.size(); i++) {
-                Categoria c = VariablesGlobales.categorias.get(i);
-                if (c.getCategoria().equals(categoriaSeleccionada) && c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
-                    if(c.getListaDoble() != null) {
-                        ListaDoble listaDoble  = c.getListaDoble();
-                        VariablesGlobales.listaDoble = listaDoble;
-                        Icon urlImg = (Icon) VariablesGlobales.listaDoble.getInicio();
-
-                        if(urlImg != null) {
-                            jlImg.setIcon(urlImg);
-                        }
-//                        DefaultComboBoxModel<String> comboModel = (DefaultComboBoxModel<String>) lstCategorias.getModel();
-//
-//                        listaDoble = c.getListaDoble();
-//
-//                        NodoImagen actual = listaDoble.getPrimero();
-//                        while (actual != null) {
-//                            comboModel.addElement(actual.getImagen().getNombre().toString());
-//                            actual = actual.getSiguiente();
-//                        }
-//                        listaDoble.imprimir();
-                        }
-                    
-                    }
-                    System.out.println(VariablesGlobales.categorias.get(i).getCategoria());
-                    System.out.println(VariablesGlobales.categorias.get(i).getUsuario());
-                    System.out.println(VariablesGlobales.categorias.get(i).getListaDoble());
-                    break;
-                }   
-            }
-
-    }//GEN-LAST:event_btnCargarCategoriaActionPerformed
 
     
     
@@ -520,7 +480,6 @@ public class Biblioteca extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarImagen;
-    private javax.swing.JButton btnCargarCategoria;
     private javax.swing.JButton btnCategoriaAgregar;
     private javax.swing.JButton btnCategoriaElimnar;
     private javax.swing.JButton btnEliminarImagen;

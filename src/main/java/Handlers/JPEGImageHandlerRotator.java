@@ -58,7 +58,7 @@ public class JPEGImageHandlerRotator extends ImageHandler{
             }
         }
 
-        ImageIO.write(vertical, "jpg", new File("./BN " + nombreCorto + ".jpg"));
+        ImageIO.write(vertical, "jpg", new File("./Vertical " + nombreCorto + ".jpg"));
 
         
         

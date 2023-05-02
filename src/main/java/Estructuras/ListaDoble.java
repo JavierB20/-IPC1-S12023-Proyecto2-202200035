@@ -13,7 +13,13 @@ public class ListaDoble extends EstructuraDeDatos{
     private NodoImagen primero;
     
     public NodoImagen getPrimero() {
-        return this.primero;
+        if(primerNodo == null) {
+            System.out.println("null");
+            return null;
+        }
+        
+        NodoImagen nodoAuxiliar = primerNodo;
+        return nodoAuxiliar;
     }
 
     public Object getInicio() {
@@ -43,6 +49,20 @@ public class ListaDoble extends EstructuraDeDatos{
         
         System.out.print("null");
         
+    }
+    
+    public String recorrerLista() {
+        NodoImagen nodoImagen = primerNodo;
+        String nombresImagenes = "";
+        
+        while (nodoImagen != null) {
+            nombresImagenes += nodoImagen.getImagen().getNombre() + ", ";
+            nodoImagen = nodoImagen.getSiguiente();
+        }
+        if (nombresImagenes.length() > 0) {
+            nombresImagenes = nombresImagenes.substring(0, nombresImagenes.length() - 2);
+        }
+        return nombresImagenes;
     }
     
     

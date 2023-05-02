@@ -22,6 +22,20 @@ public class ListaSimple extends EstructuraDeDatos{
         System.out.println("\n");
     }
         
+    public String recorrerLista() {
+        NodoUsuario nodoUsuario = cabeza;
+        String nombres = "";
+        
+        while (nodoUsuario != null) {
+            nombres += nodoUsuario.getUsuario().getNombreUsuario() + ", ";
+            nodoUsuario = nodoUsuario.getSiguiente();
+        }
+        if (nombres.length() > 0) {
+            nombres = nombres.substring(0, nombres.length() - 2);
+        }
+        return nombres;
+    }
+    
     
     @Override
     public void add(Object e) {
@@ -79,7 +93,24 @@ public class ListaSimple extends EstructuraDeDatos{
 
     @Override
     public Object get(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (cabeza == null || i < 0) {
+            return null;
+        }
+        
+        NodoUsuario nodoActual = cabeza;
+        int contador = 0;
+        
+        while(contador < i && nodoActual != null) {
+            nodoActual = nodoActual.getSiguiente();
+            contador++;
+        }
+        
+        if(nodoActual == null) {
+            return null;
+        }
+        else {
+            return nodoActual;
+        }
     }
 
     @Override

@@ -4,6 +4,17 @@
  */
 package GUI;
 
+import Class.Categoria;
+import Class.Usuarios;
+import Class.VariablesGlobales;
+import Estructuras.ListaDoble;
+import Estructuras.ListaSimple; 
+import Estructuras.NodoUsuario;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Javier
@@ -17,6 +28,33 @@ public class Convertidor extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Convertidor");
+        
+        //Mostrar los usuarios
+        if(VariablesGlobales.listaSimple != null) {
+            String nombresUsuarios = VariablesGlobales.listaSimple.recorrerLista();
+            String[] nombresArray = nombresUsuarios.split(", ");
+            for (String nombre : nombresArray) {
+                cbUsuario.addItem(nombre);
+            }
+        }
+        //Mostrar las categorias segun el usuario
+        cbUsuario.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    // Borrar todos los elementos del JComboBox
+                    cbCategoria.removeAllItems();
+
+                    String elementoSeleccionado = (String) e.getItem();
+                    cbCategoria.addItem("-- Seleccione Categoria --");
+                    for (Categoria c : VariablesGlobales.categorias) {
+                        if (c.getUsuario().equals(elementoSeleccionado)) {
+                            cbCategoria.addItem(c.getCategoria());
+                        }
+                    }
+                }
+            }
+        });
+
     }
 
     /**
@@ -58,6 +96,8 @@ public class Convertidor extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Usuario");
 
+        cbUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Seleccione Usuariuo --" }));
+
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Categoria");
 
@@ -68,20 +108,28 @@ public class Convertidor extends javax.swing.JFrame {
         });
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Cola de procesamiento");
 
         jScrollPane1.setViewportView(lstImagen);
 
+        rbConvertir.setBackground(new java.awt.Color(28, 83, 131));
         rbConvertir.setForeground(new java.awt.Color(255, 255, 255));
         rbConvertir.setText("JPEG a BMP y viceversa");
         rbConvertir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
+        rbCopia.setBackground(new java.awt.Color(28, 83, 131));
         rbCopia.setForeground(new java.awt.Color(255, 255, 255));
         rbCopia.setText("copia a JPEG");
         rbCopia.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
+        rbRVAS.setBackground(new java.awt.Color(28, 83, 131));
         rbRVAS.setForeground(new java.awt.Color(255, 255, 255));
         rbRVAS.setText("Rojo Verde Azul Sepia");
         rbRVAS.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -91,10 +139,12 @@ public class Convertidor extends javax.swing.JFrame {
             }
         });
 
+        rbModificarImagen.setBackground(new java.awt.Color(28, 83, 131));
         rbModificarImagen.setForeground(new java.awt.Color(255, 255, 255));
         rbModificarImagen.setText("Modifcar Imagen");
         rbModificarImagen.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
+        rbBN.setBackground(new java.awt.Color(28, 83, 131));
         rbBN.setForeground(new java.awt.Color(255, 255, 255));
         rbBN.setText("Blanco y negro");
         rbBN.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -286,6 +336,40 @@ public class Convertidor extends javax.swing.JFrame {
         ventana.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_bntSalirActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        String usuario = (String) cbUsuario.getSelectedItem();
+        String categoria = (String) cbCategoria.getSelectedItem();
+
+        if (usuario == null && categoria == null) {
+            JOptionPane.showMessageDialog(null, "Seleccione un usuario y una categoría para agregar las imagenes.");
+        } 
+        else {
+            ListaDoble listaDoble = new ListaDoble();
+            DefaultListModel<String> modeloLista = new DefaultListModel<>();
+            for (int i = 0; i < VariablesGlobales.categorias.size(); i++) {
+                Categoria c = VariablesGlobales.categorias.get(i);
+                if (c.getCategoria().equals(categoria) && c.getUsuario().equals(usuario)) {
+                    if(c.getListaDoble() != null) {
+                        listaDoble = c.getListaDoble();
+
+                        String nombresImagenes = VariablesGlobales.listaDoble.recorrerLista();
+                            String[] nombresArray = nombresImagenes.split(", ");
+                            for (String nombre : nombresArray) {
+                                modeloLista.addElement(nombre);
+                        }
+                        lstImagen.setModel(modeloLista);
+                        //Codigo Provisional
+                        VariablesGlobales.listaDoble = listaDoble;
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "La categoria " + categoria + " del usuario " + usuario +" no contiene imagenes!!");
+                    }
+                }
+            break;
+            }   
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
     /**
      * @param args the command line arguments
