@@ -5,6 +5,7 @@
 package GUI;
 
 import Class.VariablesGlobales;
+import Handlers.BMPtoJPEGImage;
 import Handlers.JPEGHandler;
 import Handlers.JPEGImageCopy;
 import Handlers.JPEGImageHandlerBN;
@@ -216,11 +217,29 @@ public class Editor extends javax.swing.JFrame {
         }
         else {
             if(rbConvertir.isSelected()){
-                JPEGtoBMPImage handlerBN = new JPEGtoBMPImage(VariablesGlobales.imgRuta.replace("\\", "/"));
-                try{
-                    JPEGHandler.runHandler(handlerBN);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                
+                String imgRuta = VariablesGlobales.imgRuta.replace("\\", "/");
+                String extension = imgRuta.substring(imgRuta.lastIndexOf(".") + 1);
+
+                if(extension.equals("jpg")) {
+                    JPEGtoBMPImage handlerBMP = new JPEGtoBMPImage(VariablesGlobales.imgRuta.replace("\\", "/"));
+                    JPEGtoBMPImage handlerJPG = new JPEGtoBMPImage(VariablesGlobales.imgRuta.replace("\\", "/"));
+                    try{
+                        JPEGHandler.runHandler(handlerBMP);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    } 
+                }
+                else if(extension.equals("bmp")) {
+                    BMPtoJPEGImage handlerJPG = new BMPtoJPEGImage(VariablesGlobales.imgRuta.replace("\\", "/"));
+                    try{
+                        JPEGHandler.runHandler(handlerJPG);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    } 
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "El formato de la imagen no es valido");
                 }
             }
             if(rbCopia.isSelected()){

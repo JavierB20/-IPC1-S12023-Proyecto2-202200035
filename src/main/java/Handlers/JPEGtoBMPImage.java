@@ -37,7 +37,7 @@ public class JPEGtoBMPImage extends ImageHandler{
 
     @Override
     public void generateFiles() throws Exception {
-        ImageIO.write(bmp, "jpg", new File("./Convertir " + nombreCorto + ".bmp"));
+        ImageIO.write(bmp, "jpg", new File("./ConvertirBMP " + nombreCorto + ".bmp"));
         bmpTemporal.delete();
     }
 }
