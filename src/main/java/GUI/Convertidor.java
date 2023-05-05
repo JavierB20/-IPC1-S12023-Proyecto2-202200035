@@ -97,8 +97,8 @@ public class Convertidor extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
+        lbConsola = new javax.swing.JLabel();
         bntSalir = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -197,24 +197,20 @@ public class Convertidor extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(lbConsola, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 74, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbConsola, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         bntSalir.setText("Salir");
         bntSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bntSalirActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
             }
         });
 
@@ -269,13 +265,8 @@ public class Convertidor extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(292, 292, 292))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(234, 234, 234))))))
+                        .addComponent(jLabel4)
+                        .addGap(292, 292, 292))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -297,28 +288,28 @@ public class Convertidor extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(jButton1)
-                        .addGap(2, 2, 2)
+                        .addGap(76, 76, 76)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(rbConvertir)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rbCopia)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rbRVAS)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rbModificarImagen)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rbBN)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                                .addComponent(jLabel4)
+                                .addGap(29, 29, 29))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(50, 50, 50)
-                                .addComponent(btnEjecutarParalelo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(rbConvertir)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(rbCopia)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(rbRVAS)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(rbModificarImagen)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(rbBN))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
-                        .addGap(29, 29, 29)
+                                .addComponent(btnEjecutarParalelo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addComponent(pbCantidadProcesada, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel5)
@@ -513,6 +504,7 @@ public class Convertidor extends javax.swing.JFrame {
         if(hilos.size() == 5) {
             aumentar.set(20);
             final int inicioFinal = 20;
+            int tamano = hilos.size();
             
             Thread thread = new Thread(new Runnable() {
             @Override
@@ -524,7 +516,20 @@ public class Convertidor extends javax.swing.JFrame {
                             pbCantidadProcesada.setValue(aumentar.get());
                         }
                     });
+                    
+                for (String nombreImagen : VariablesGlobales.lstImagenesNombre) {
+                    // Hacer algo con el nombre de la imagen
+                    String mensaje = nombreImagen + " -> Ejecucion";
+                    lbConsola.setText(mensaje);
 
+                    // Agregar un pequeño retraso para que se vea la actualización en el JLabel
+                    try {
+                        Thread.sleep(1000); // Pausa de 1 segundo
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                    
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
@@ -557,6 +562,19 @@ public class Convertidor extends javax.swing.JFrame {
                         }
                     });
 
+                for (String nombreImagen : VariablesGlobales.lstImagenesNombre) {
+                    // Hacer algo con el nombre de la imagen
+                    String mensaje = nombreImagen + " -> Ejecucion";
+                    lbConsola.setText(mensaje);
+
+                    // Agregar un pequeño retraso para que se vea la actualización en el JLabel
+                    try {
+                        Thread.sleep(1000); // Pausa de 1 segundo
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                    
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
@@ -587,7 +605,20 @@ public class Convertidor extends javax.swing.JFrame {
                             pbCantidadProcesada.setValue(aumentar.get());
                         }
                     });
+                
+                for (String nombreImagen : VariablesGlobales.lstImagenesNombre) {
+                    // Hacer algo con el nombre de la imagen
+                    String mensaje = nombreImagen + " -> Ejecucion";
+                    lbConsola.setText(mensaje);
 
+                    // Agregar un pequeño retraso para que se vea la actualización en el JLabel
+                    try {
+                        Thread.sleep(1000); // Pausa de 1 segundo
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
@@ -618,7 +649,20 @@ public class Convertidor extends javax.swing.JFrame {
                             pbCantidadProcesada.setValue(aumentar.get());
                         }
                     });
+                
+                for (String nombreImagen : VariablesGlobales.lstImagenesNombre) {
+                    // Hacer algo con el nombre de la imagen
+                    String mensaje = nombreImagen + " -> Ejecucion";
+                    lbConsola.setText(mensaje);
 
+                    // Agregar un pequeño retraso para que se vea la actualización en el JLabel
+                    try {
+                        Thread.sleep(1000); // Pausa de 1 segundo
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
@@ -650,6 +694,19 @@ public class Convertidor extends javax.swing.JFrame {
                         }
                     });
 
+                for (String nombreImagen : VariablesGlobales.lstImagenesNombre) {
+                    // Hacer algo con el nombre de la imagen
+                    String mensaje = nombreImagen + " -> Ejecucion";
+                    lbConsola.setText(mensaje);
+
+                    // Agregar un pequeño retraso para que se vea la actualización en el JLabel
+                    try {
+                        Thread.sleep(1000); // Pausa de 1 segundo
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
@@ -668,37 +725,6 @@ public class Convertidor extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnEjecutarParaleloActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        AtomicInteger aumentar = new AtomicInteger(20);
-        int inicio = 20;
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (aumentar.get() <= 100) {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            pbCantidadProcesada.setValue(aumentar.get());
-                        }
-                    });
-
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                     aumentar.addAndGet(inicio);
-                    System.out.println(aumentar);
-                }
-
-                System.out.println("Termine");
-            }
-        });
-
-        thread.start();
-    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     
@@ -744,7 +770,6 @@ public class Convertidor extends javax.swing.JFrame {
     private javax.swing.JButton btnEjecutarParalelo;
     private javax.swing.JComboBox<String> cbCategoria;
     private javax.swing.JComboBox<String> cbUsuario;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -754,6 +779,7 @@ public class Convertidor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbConsola;
     private javax.swing.JList<String> lstImagen;
     private javax.swing.JProgressBar pbCantidadProcesada;
     private javax.swing.JRadioButton rbBN;
