@@ -197,15 +197,23 @@ public class ListaDoble extends EstructuraDeDatos{
         while (nodoAuxiliar != null && !nodoAuxiliar.getImagen().getNombre().equals(nombreImagen)) {
             nodoAuxiliar = nodoAuxiliar.getSiguiente();
         }
-        
+
         if (nodoAuxiliar == null) {
             return;
         } else if (nodoAuxiliar == primerNodo) {
             primerNodo = primerNodo.getSiguiente();
-            primerNodo.setAnterior(null);
+            if (primerNodo != null) {
+                primerNodo.setAnterior(null);
+            } else {
+                ultimoNodo = null;
+            }
         } else if (nodoAuxiliar == ultimoNodo) {
             ultimoNodo = ultimoNodo.getAnterior();
-            ultimoNodo.setSiguiente(null);
+            if (ultimoNodo != null) {
+                ultimoNodo.setSiguiente(null);
+            } else {
+                primerNodo = null;
+            }
         } else {
             nodoAuxiliar.getAnterior().setSiguiente(nodoAuxiliar.getSiguiente());
             nodoAuxiliar.getSiguiente().setAnterior(nodoAuxiliar.getAnterior());

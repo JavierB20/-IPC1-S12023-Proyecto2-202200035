@@ -5,11 +5,8 @@
 package GUI;
 
 import Class.Categoria;
-import Class.Usuarios;
 import Class.VariablesGlobales;
 import Estructuras.ListaDoble;
-import Estructuras.ListaSimple; 
-import Estructuras.NodoUsuario;
 import Handlers.BMPtoJPEGImage;
 import Handlers.JPEGHandler;
 import Handlers.JPEGImageCopy;
@@ -17,11 +14,12 @@ import Handlers.JPEGImageHandlerBN;
 import Handlers.JPEGImageHandlerColors;
 import Handlers.JPEGImageHandlerRotator;
 import Handlers.JPEGtoBMPImage;
-import java.awt.List;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -388,112 +386,126 @@ public class Convertidor extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEjecutarParaleloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarParaleloActionPerformed
-    LinkedList<Thread> hilos = new LinkedList<>();
-    
-    if (rbConvertir.isSelected()) {
-        Thread hilo1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (String url : VariablesGlobales.lstImagenesUrl) {
-                    String extension = url.substring(url.lastIndexOf(".") + 1);
-                    if(extension.equals("jpg")) {
-                        JPEGtoBMPImage handlerBMP = new JPEGtoBMPImage(url);
+        LinkedList<Thread> hilos = new LinkedList<>();
+        LinkedList<Future<?>> futures = new LinkedList<>();
+
+
+        //pbCantidadProcesada.setValue(50);
+
+
+        if (rbConvertir.isSelected()) {
+            Thread hilo1 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (String url : VariablesGlobales.lstImagenesUrl) {
+                        String extension = url.substring(url.lastIndexOf(".") + 1);
+                        if(extension.equals("jpg")) {
+                            JPEGtoBMPImage handlerBMP = new JPEGtoBMPImage(url);
+                            try{
+                                JPEGHandler.runHandler(handlerBMP);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            } 
+                        }
+                        else if(extension.equals("bmp")) {
+                            BMPtoJPEGImage handlerJPG = new BMPtoJPEGImage(url);
+                            try{
+                                JPEGHandler.runHandler(handlerJPG);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            } 
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "El formato de la imagen no es valido");
+                        }
+                    }
+                }
+            });
+            hilos.add(hilo1);
+        }
+
+        if (rbCopia.isSelected()) {
+            Thread hilo2 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (String url : VariablesGlobales.lstImagenesUrl) {
+                        JPEGImageCopy handlerBN = new JPEGImageCopy(url);
                         try{
-                            JPEGHandler.runHandler(handlerBMP);
+                            JPEGHandler.runHandler(handlerBN);
                         } catch (Exception ex) {
                             ex.printStackTrace();
-                        } 
+                        }
                     }
-                    else if(extension.equals("bmp")) {
-                        BMPtoJPEGImage handlerJPG = new BMPtoJPEGImage(url);
+                }
+            });
+            hilos.add(hilo2);
+        }
+
+            if (rbRVAS.isSelected()) {
+            Thread hilo3 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (String url : VariablesGlobales.lstImagenesUrl) {
+                        JPEGImageHandlerColors handlerBN = new JPEGImageHandlerColors(url);
                         try{
-                            JPEGHandler.runHandler(handlerJPG);
+                            JPEGHandler.runHandler(handlerBN);
                         } catch (Exception ex) {
                             ex.printStackTrace();
-                        } 
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(null, "El formato de la imagen no es valido");
+                        }
                     }
                 }
-            }
-        });
-        hilos.add(hilo1);
-    }
+            });
+            hilos.add(hilo3);
+        }
 
-    if (rbCopia.isSelected()) {
-        Thread hilo2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (String url : VariablesGlobales.lstImagenesUrl) {
-                    JPEGImageCopy handlerBN = new JPEGImageCopy(url);
-                    try{
-                        JPEGHandler.runHandler(handlerBN);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+        if (rbModificarImagen.isSelected()) {
+            Thread hilo4 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (String url : VariablesGlobales.lstImagenesUrl) {
+                        JPEGImageHandlerRotator handlerBN = new JPEGImageHandlerRotator(url);
+                        try{
+                            JPEGHandler.runHandler(handlerBN);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 }
-            }
-        });
-        hilos.add(hilo2);
-    }
-    
-        if (rbRVAS.isSelected()) {
-        Thread hilo3 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (String url : VariablesGlobales.lstImagenesUrl) {
-                    JPEGImageHandlerColors handlerBN = new JPEGImageHandlerColors(url);
-                    try{
-                        JPEGHandler.runHandler(handlerBN);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        });
-        hilos.add(hilo3);
-    }
+            });
+            hilos.add(hilo4);
+        }
 
-    if (rbModificarImagen.isSelected()) {
-        Thread hilo4 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (String url : VariablesGlobales.lstImagenesUrl) {
-                    JPEGImageHandlerRotator handlerBN = new JPEGImageHandlerRotator(url);
-                    try{
-                        JPEGHandler.runHandler(handlerBN);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+        if (rbBN.isSelected()) {
+            Thread hilo5 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (String url : VariablesGlobales.lstImagenesUrl) {
+                        JPEGImageHandlerBN handlerBN = new JPEGImageHandlerBN(url);
+                        try{
+                            JPEGHandler.runHandler(handlerBN);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 }
-            }
-        });
-        hilos.add(hilo4);
-    }
+            });
+            hilos.add(hilo5);
+        }
 
-    if (rbBN.isSelected()) {
-        Thread hilo5 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (String url : VariablesGlobales.lstImagenesUrl) {
-                    JPEGImageHandlerBN handlerBN = new JPEGImageHandlerBN(url);
-                    try{
-                        JPEGHandler.runHandler(handlerBN);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        });
-        hilos.add(hilo5);
-    }
-    
-    for (Thread hilo : hilos) {
-        hilo.start();
-    }
+    //    for (Thread hilo : hilos) {
+    //        hilo.start();
+    //    }
 
-        
+        ExecutorService executor = Executors.newFixedThreadPool(hilos.size());
+
+        for (Thread hilo : hilos) {
+            Future<?> future = executor.submit(hilo);
+            futures.add(future);
+        }
+
+        // Esperar a que los hilos terminen y actualizar el progreso...
+        executor.shutdown();
+
     }//GEN-LAST:event_btnEjecutarParaleloActionPerformed
 
     /**
