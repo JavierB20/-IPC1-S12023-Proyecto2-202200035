@@ -352,7 +352,10 @@ public class Convertidor extends javax.swing.JFrame {
                 if (c.getCategoria().equals(categoria) && c.getUsuario().equals(usuario)) {
                     if(c.getListaDoble() != null) {
                         listaDoble = c.getListaDoble();
-
+                        
+                        DefaultListModel modelo = (DefaultListModel) lstImagen.getModel();
+                        modelo.clear();
+                        
                         String nombresImagenes = VariablesGlobales.listaDoble.recorrerLista();
                             String[] nombresArray = nombresImagenes.split(", ");
                             for (String nombre : nombresArray) {

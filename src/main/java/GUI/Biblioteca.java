@@ -10,9 +10,7 @@ import Class.VariablesGlobales;
 import Estructuras.ListaDoble;
 import Estructuras.NodoImagen;
 import java.awt.Image;
-import java.awt.event.ItemListener;
 import java.io.File;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -49,7 +47,8 @@ public class Biblioteca extends javax.swing.JFrame {
         boolean categoriaGeneralExiste = Categoria.existeCategoriaGeneral();
 
         if (!categoriaGeneralExiste) {
-            Categoria categoriaGeneral = new Categoria(VariablesGlobales.usuarioActual, "General", VariablesGlobales.listaDoble);
+            ListaDoble listaDoble = new ListaDoble();
+            Categoria categoriaGeneral = new Categoria(VariablesGlobales.usuarioActual, "General", listaDoble);
             VariablesGlobales.categorias.add(categoriaGeneral);
             for (Categoria categoria : VariablesGlobales.categorias) {
                 if (categoria.getUsuario().equals(VariablesGlobales.usuarioActual)) {
@@ -65,8 +64,9 @@ public class Biblioteca extends javax.swing.JFrame {
 
             for (Categoria c : VariablesGlobales.categorias) {
                 if(c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                    if(c.getCategoria() != null) {
                     modeloLista.addElement(c.getCategoria());
-
+                    }
                 }
             }
             lstCategorias.setModel(modeloLista);
@@ -85,30 +85,32 @@ public class Biblioteca extends javax.swing.JFrame {
                     // Hacer algo con el elemento seleccionado
                     for (int i = 0; i < VariablesGlobales.categorias.size(); i++) {
                         Categoria c = VariablesGlobales.categorias.get(i);
-                        if (c.getCategoria().equals(elementoSeleccionado) && c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
-                            if(c.getListaDoble() != null) {
-                                ListaDoble listaDoble  = c.getListaDoble();
-                                VariablesGlobales.listaDoble = listaDoble;
-                                Icon urlImg = (Icon) VariablesGlobales.listaDoble.getInicio();
+                        if(c.getCategoria() != null) {
+                            if (c.getCategoria().equals(elementoSeleccionado) && c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                                if(c.getListaDoble() != null) {
+                                    ListaDoble listaDoble  = c.getListaDoble();
+                                    VariablesGlobales.listaDoble = listaDoble;
+                                    Icon urlImg = (Icon) VariablesGlobales.listaDoble.getInicio();
 
-                                if(urlImg != null) {
-                                    jlImg.setIcon(urlImg);
-                                    
-                                    NodoImagen actual = listaDoble.getPrimero();
-                                    while (actual != null) {
-                                        cbImagen.addItem(actual.getImagen().getNombre().toString());
-                                        actual = actual.getSiguiente();
-                                    }
-                                }                   
-                                else {
-                                    cbImagen.removeAllItems();
-                                    String rutaImagen = "C:/Users/prueb/Documents/NetBeansProjects/Ugallery/fondo.png";
-                                    File archivoImg = new File(rutaImagen);
-                                    ImageIcon iconoImagen = new ImageIcon(archivoImg.getAbsolutePath());
-                                    jlImg.setIcon(iconoImagen);
-                                } 
+                                    if(urlImg != null) {
+                                        jlImg.setIcon(urlImg);
+
+                                        NodoImagen actual = listaDoble.getPrimero();
+                                        while (actual != null) {
+                                            cbImagen.addItem(actual.getImagen().getNombre().toString());
+                                            actual = actual.getSiguiente();
+                                        }
+                                    }                   
+                                    else {
+                                        cbImagen.removeAllItems();
+                                        String rutaImagen = "C:/Users/prueb/Documents/NetBeansProjects/Ugallery/fondo.png";
+                                        File archivoImg = new File(rutaImagen);
+                                        ImageIcon iconoImagen = new ImageIcon(archivoImg.getAbsolutePath());
+                                        jlImg.setIcon(iconoImagen);
+                                    } 
+                                }
+
                             }
-
                         }
                         System.out.println(VariablesGlobales.categorias.get(i).getCategoria());
                         System.out.println(VariablesGlobales.categorias.get(i).getUsuario());
@@ -282,6 +284,7 @@ public class Biblioteca extends javax.swing.JFrame {
             
             for (int i = 0; i < VariablesGlobales.categorias.size(); i++) {
                 Categoria c = VariablesGlobales.categorias.get(i);
+                System.out.println(VariablesGlobales.categorias.get(i));
                 if (c.getCategoria().equals(categoriaSeleccionada) && c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
                     if(c.getListaDoble() != null) {
                         if(resultado == JFileChooser.APPROVE_OPTION) {
@@ -335,7 +338,9 @@ public class Biblioteca extends javax.swing.JFrame {
             }
         }
         lstCategorias.setModel(modeloLista);
-        VariablesGlobales.listaDoble.imprimir();
+        if(VariablesGlobales.listaDoble != null) {
+            VariablesGlobales.listaDoble.imprimir();
+        }
     }//GEN-LAST:event_btnCategoriaAgregarActionPerformed
 
     private void btnCategoriaElimnarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriaElimnarActionPerformed
