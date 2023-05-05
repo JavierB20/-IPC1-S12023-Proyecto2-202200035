@@ -58,11 +58,13 @@ public class ListaDoble extends EstructuraDeDatos{
         
         while (nodoImagen != null) {
             nombresImagenes += nodoImagen.getImagen().getNombre() + ", ";
+            VariablesGlobales.lstImagenesUrl.add(nodoImagen.getImagen().getImageIcon().toString().replace("\\", "/"));
             nodoImagen = nodoImagen.getSiguiente();
         }
         if (nombresImagenes.length() > 0) {
             nombresImagenes = nombresImagenes.substring(0, nombresImagenes.length() - 2);
         }
+        
         return nombresImagenes;
     }
     
