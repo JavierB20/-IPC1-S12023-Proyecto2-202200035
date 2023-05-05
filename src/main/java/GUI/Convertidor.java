@@ -387,7 +387,6 @@ public class Convertidor extends javax.swing.JFrame {
 
     private void btnEjecutarParaleloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarParaleloActionPerformed
         LinkedList<Thread> hilos = new LinkedList<>();
-        LinkedList<Future<?>> futures = new LinkedList<>();
 
 
         //pbCantidadProcesada.setValue(50);
@@ -492,19 +491,11 @@ public class Convertidor extends javax.swing.JFrame {
             hilos.add(hilo5);
         }
 
-    //    for (Thread hilo : hilos) {
-    //        hilo.start();
-    //    }
-
-        ExecutorService executor = Executors.newFixedThreadPool(hilos.size());
-
         for (Thread hilo : hilos) {
-            Future<?> future = executor.submit(hilo);
-            futures.add(future);
+            hilo.start();
         }
 
-        // Esperar a que los hilos terminen y actualizar el progreso...
-        executor.shutdown();
+
 
     }//GEN-LAST:event_btnEjecutarParaleloActionPerformed
 
