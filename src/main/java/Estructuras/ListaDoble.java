@@ -12,6 +12,7 @@ public class ListaDoble extends EstructuraDeDatos{
     NodoImagen ultimoNodo;
     private NodoImagen primero;
     
+        
     public NodoImagen getPrimero() {
         if(primerNodo == null) {
             System.out.println("null");
@@ -121,7 +122,27 @@ public class ListaDoble extends EstructuraDeDatos{
         return null;
     }
     
-    public Object getBefore() {
+        public Object[] getNextP() {
+        NodoImagen nodoAuxiliar = primerNodo;
+        while (nodoAuxiliar != null && !nodoAuxiliar.getImagen().getNombre().equals(VariablesGlobales.imagenActual)) {
+            nodoAuxiliar = nodoAuxiliar.getSiguiente();
+        }
+        if (nodoAuxiliar != null) {
+            // Si se encontró el nodo de la imagen actual
+            NodoImagen nodoSiguiente = nodoAuxiliar.getSiguiente();
+        if (nodoSiguiente != null) {
+            // Si existe un nodo anterior, se devuelve su imagen
+            Object[] resultado = new Object[2];
+            resultado[0] = nodoSiguiente.getImagen().getImageIcon();
+            resultado[1] = nodoSiguiente.getImagen().getNombre();
+            return resultado;
+            }
+        }
+        // Si no se encontró el nodo de la imagen actual o no existe un nodo anterior, se devuelve null
+        return null;
+    }
+    
+    public Object[] getBefore() {
         NodoImagen nodoAuxiliar = primerNodo;
         while (nodoAuxiliar != null && !nodoAuxiliar.getImagen().getNombre().equals(VariablesGlobales.imagenActual)) {
             nodoAuxiliar = nodoAuxiliar.getSiguiente();
@@ -129,15 +150,19 @@ public class ListaDoble extends EstructuraDeDatos{
         if (nodoAuxiliar != null) {
             // Si se encontró el nodo de la imagen actual
             NodoImagen nodoAnterior = nodoAuxiliar.getAnterior();
-        if (nodoAnterior != null) {
-            // Si existe un nodo anterior, se devuelve su imagen
-            return nodoAnterior.getImagen().getImageIcon();
+            if (nodoAnterior != null) {
+                // Si existe un nodo anterior, se devuelve su imagen y nombre
+                Object[] resultado = new Object[2];
+                resultado[0] = nodoAnterior.getImagen().getImageIcon();
+                resultado[1] = nodoAnterior.getImagen().getNombre();
+                return resultado;
             }
         }
         // Si no se encontró el nodo de la imagen actual o no existe un nodo anterior, se devuelve null
         return null;
-        
     }
+
+
 
 
     @Override

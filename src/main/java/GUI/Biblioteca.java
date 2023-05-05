@@ -45,26 +45,21 @@ public class Biblioteca extends javax.swing.JFrame {
                 }
             }
             
-//        if (usuarioEncontrado) {
-//            // Validar si ya existe la categoría "General" para el usuario actual
-//            boolean categoriaGeneralExiste = Categoria.existeCategoriaGeneral();
-//
-//            // Agregar la categoría "General" si no existe
-//            if (!categoriaGeneralExiste) {
-//                Categoria categoriaGeneral = new Categoria(VariablesGlobales.usuarioActual, "General", VariablesGlobales.listaDoble);
-//                VariablesGlobales.categorias.add(categoriaGeneral);
-//            }
-//
-//            //Mostar los datos en el Jlist
-//            DefaultListModel<String> modeloLista = new DefaultListModel<>();
-//            for (Categoria c : VariablesGlobales.categorias) {
-//                if (c.getUsuario().equals(VariablesGlobales.usuarioActual)) {
-//                    modeloLista.addElement(c.getCategoria());
-//                }
-//            }
-//            lstCategorias.setModel(modeloLista);
-//        }   
-            
+ 
+        boolean categoriaGeneralExiste = Categoria.existeCategoriaGeneral();
+
+        if (!categoriaGeneralExiste) {
+            Categoria categoriaGeneral = new Categoria(VariablesGlobales.usuarioActual, "General", VariablesGlobales.listaDoble);
+            VariablesGlobales.categorias.add(categoriaGeneral);
+            for (Categoria categoria : VariablesGlobales.categorias) {
+                if (categoria.getUsuario().equals(VariablesGlobales.usuarioActual)) {
+                    usuarioEncontrado = true;
+                    break;
+                }
+            }
+        }
+        
+        //Mostrar las categorias del usuario    
         if (usuarioEncontrado) {
             DefaultListModel<String> modeloLista = new DefaultListModel<>();
 
@@ -187,11 +182,6 @@ public class Biblioteca extends javax.swing.JFrame {
         });
         jPanel1.add(btnEliminarImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(344, 18, -1, -1));
 
-        lstCategorias.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "General" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(lstCategorias);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 60, 94, 391));
@@ -277,6 +267,7 @@ public class Biblioteca extends javax.swing.JFrame {
 
     private void btnAgregarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarImagenActionPerformed
         String categoriaSeleccionada = lstCategorias.getSelectedValue();
+        String nombreImagen = "";
         if (categoriaSeleccionada == null) {
             JOptionPane.showMessageDialog(null, "Seleccione una categoría para agregar una imagen.");
         } 
@@ -296,6 +287,7 @@ public class Biblioteca extends javax.swing.JFrame {
                         if(resultado == JFileChooser.APPROVE_OPTION) {
                         File selectedFile = chooser.getSelectedFile();
                         String fileName = selectedFile.getName(); 
+                        nombreImagen = fileName.toString();
                         ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
                         
                         jlImg.setIcon(imageIcon);
@@ -310,26 +302,16 @@ public class Biblioteca extends javax.swing.JFrame {
                         VariablesGlobales.listaDoble = listaDoble;
                         }
                     }
-                    else {
-                        if(resultado == JFileChooser.APPROVE_OPTION) {
-                        File selectedFile = chooser.getSelectedFile();
-                        String fileName = selectedFile.getName(); 
-                        ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
-                        jlImg.setIcon(imageIcon);
-
-                        Imagen imagen = new Imagen(imageIcon, fileName);
-                        
-
-                        listaDoble.add(imagen);
-                        listaDoble.imprimir();
-                        }
-                    }
-                                        // Se encontró el objeto Categoria, agregar la imagen a la lista de imágenes
+                    // Se encontró el objeto Categoria, agregar la imagen a la lista de imágenes
                     Categoria categoria = new Categoria(VariablesGlobales.usuarioActual, categoriaSeleccionada, listaDoble);
                     VariablesGlobales.categorias.set(i, categoria);
                     System.out.println(VariablesGlobales.categorias.get(i).getCategoria());
                     System.out.println(VariablesGlobales.categorias.get(i).getUsuario());
                     System.out.println(VariablesGlobales.categorias.get(i).getListaDoble());
+                    if (nombreImagen != null) {
+                        cbImagen.addItem(nombreImagen.toString());
+                        cbImagen.setSelectedItem(nombreImagen);
+                    }
                     break;
                 }   
             }
@@ -455,10 +437,15 @@ public class Biblioteca extends javax.swing.JFrame {
         File archivoImagen = new File(imagenIcono.getDescription());
         VariablesGlobales.imagenActual = archivoImagen.getName();
 
-        Icon urlImg = (Icon) VariablesGlobales.listaDoble.getBefore();
+        Object[] imagenAnterior = VariablesGlobales.listaDoble.getBefore();
         
-        if(urlImg != null) {
-            jlImg.setIcon(urlImg);
+        if(imagenAnterior != null) {
+            ImageIcon iconoAnterior = (ImageIcon) imagenAnterior[0];
+            String nombreAnterior = (String) imagenAnterior[1];
+
+            // Cambiar el Icon y actualizar el JComboBox
+            jlImg.setIcon(iconoAnterior);
+            cbImagen.setSelectedItem(nombreAnterior);
         }
 
     }//GEN-LAST:event_btnImagenAnteriorActionPerformed
@@ -474,10 +461,15 @@ public class Biblioteca extends javax.swing.JFrame {
         File archivoImagen = new File(imagenIcono.getDescription());
         VariablesGlobales.imagenActual = archivoImagen.getName();
 
-        Icon urlImg = (Icon) VariablesGlobales.listaDoble.getNext();
+        Object[] imagenSiguiente = VariablesGlobales.listaDoble.getNextP();
         
-        if(urlImg != null) {
-            jlImg.setIcon(urlImg);
+         if(imagenSiguiente != null) {
+            ImageIcon iconoSiguiente = (ImageIcon) imagenSiguiente[0];
+            String nombreSiguiente = (String) imagenSiguiente[1];
+
+            // Cambiar el Icon y actualizar el JComboBox
+            jlImg.setIcon(iconoSiguiente);
+            cbImagen.setSelectedItem(nombreSiguiente);
         }
     }//GEN-LAST:event_btnImagenSiguienteActionPerformed
 
